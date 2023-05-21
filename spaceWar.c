@@ -78,23 +78,25 @@ void deleteBullet(int id)
     {
         //Otherwise sets destroyed bullet's next in list to place bullet was (or frees last item if most recently created)
         Bullet* current = bullets;
+        bool freed = false;
         for (int i = 0; i < bulletCount; i++)
         {
             if (current->next != NULL)
             {
-                current = current->next;
-                if (i == id)
+                if (i == id - 1 && !freed)
                 {    
                     Bullet* temp = current->next;
                     current->next = temp->next;
+                    freed = true;
                     free(temp);
                 }
-                else if (i > id)
+                else if (i > id - 1)
                 {
                     current->id = current->id - 1;
                 }
+                current = current->next;
             }
-            else
+            else if (!freed)
             {
                 free(current);
             }
